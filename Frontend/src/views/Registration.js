@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
+import axios from 'axios';
 import './Registration.css';
 
 function Registration() {
@@ -67,14 +68,27 @@ function Registration() {
     e.preventDefault();
 
     if (validateForm()) {
-      // Perform registration logic (e.g., make an API call to the backend)
-      console.log('Registration details:', {
-        name,
-        email,
-        jobDescription,
-        phoneNumber,
-        password,
-      });
+      axios
+        .post('/api/register', {
+          name,
+          email,
+          jobDescription,
+          phoneNumber,
+          password,
+        })
+        .then((response) => {
+          // Handle the response from the backend
+          if (response.data.message) {
+            // Registration successful, display success message or redirect to login page
+            console.log('Registration successful');
+          } else {
+            // Registration failed, display error message
+            console.log('Registration failed');
+          }
+        })
+        .catch((error) => {
+          console.error('Error:', error);
+        });
     }
   };
 

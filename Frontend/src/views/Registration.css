@@ -33,6 +33,7 @@
     padding: 10px;
     border: 1px solid #ddd;
     border-radius: 5px;
+    margin-top: 5px;
   }
   
   .registration-container .error {
@@ -44,6 +45,7 @@
     background-color: #007bff;
     color: #fff;
     border: none;
+    margin-top: 10px;
     padding: 10px 20px;
     border-radius: 5px;
     cursor: pointer;

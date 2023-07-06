@@ -8,10 +8,6 @@ import Dashboard from './views/Dashboard';
 function App() {
   return (
     <Router>
-      <nav>
-        <Link to= '/'> Login</Link>
-        <Link to="/register">Register</Link>
-      </nav>
       <Routes>
         <Route exact path="/" element={ <Login /> } />
         <Route exact path="/register" element={ <Registration />} />

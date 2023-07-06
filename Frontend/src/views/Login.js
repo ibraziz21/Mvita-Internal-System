@@ -39,6 +39,7 @@ function Login() {
 
   const handleLogin = (e) => {
     e.preventDefault();
+    
 
     const validationErrors = validateForm();
 
@@ -47,6 +48,30 @@ function Login() {
     } else {
       console.log('Login with email:', email, 'and password:', password);
     }
+  
+    // Make a POST request to the login API endpoint
+    fetch('/api/login', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ email, password }),
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        // Handle the response from the backend
+        if (data.token) {
+          // Authentication successful, save the token to local storage or browser's cookie
+          // Redirect to the dashboard or any other authenticated route
+          console.log('Login successful');
+        } else {
+          // Authentication failed, display error message
+          console.log('Login failed');
+        }
+      })
+      .catch((error) => {
+        console.error('Error:', error);
+      });
   };
 
   return (
