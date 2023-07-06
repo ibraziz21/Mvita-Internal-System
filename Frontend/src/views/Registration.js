@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import './Registration.css';
 
@@ -9,6 +9,8 @@ function Registration() {
   const [jobDescription, setJobDescription] = useState('');
   const [phoneNumber, setPhoneNumber] = useState('');
   const [password, setPassword] = useState('');
+
+  const navigate =  useNavigate();
 
   const [errors, setErrors] = useState({});
 
@@ -69,7 +71,7 @@ function Registration() {
 
     if (validateForm()) {
       axios
-        .post('/api/register', {
+        .post('/api/users/register', {
           name,
           email,
           jobDescription,
@@ -81,6 +83,7 @@ function Registration() {
           if (response.data.message) {
             // Registration successful, display success message or redirect to login page
             console.log('Registration successful');
+            navigate('/dashboard');
           } else {
             // Registration failed, display error message
             console.log('Registration failed');
