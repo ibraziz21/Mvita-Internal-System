@@ -1,11 +1,13 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import './Login.css';
 
 function Login() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [errors, setErrors] = useState({});
+
+  const navigate = useNavigate();
 
   const handleEmailChange = (e) => {
     setEmail(e.target.value);
@@ -50,7 +52,7 @@ function Login() {
     }
   
     // Make a POST request to the login API endpoint
-    fetch('/api/login', {
+    fetch('/api/users/login', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -63,6 +65,7 @@ function Login() {
         if (data.token) {
           // Authentication successful, save the token to local storage or browser's cookie
           // Redirect to the dashboard or any other authenticated route
+          navigate('/dashboard')
           console.log('Login successful');
         } else {
           // Authentication failed, display error message
