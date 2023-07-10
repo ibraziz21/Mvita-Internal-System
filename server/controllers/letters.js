@@ -1,11 +1,11 @@
-const Letter = require('../models/Letter');
+const {Letters} = require('../models');
 
 const createLetter = async (req, res) => {
     try {
       const { senderName, purpose, receivedDate } = req.body;
   
       // Create a new letter
-      const letter = await Letter.create({ senderName, purpose, receivedDate });
+      const letter = await Letters.create({ senderName, purpose, receivedDate });
   
       res.status(201).json(letter);
     } catch (error) {
@@ -17,7 +17,7 @@ const createLetter = async (req, res) => {
   const getAllLetters = async (req, res) => {
     try {
       // Retrieve all letters
-      const letters = await Letter.findAll();
+      const letters = await Letters.findAll();
   
       res.status(200).json(letters);
     } catch (error) {

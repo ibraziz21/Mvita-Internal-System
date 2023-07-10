@@ -1,6 +1,6 @@
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
-const User = require('../models/User');
+const {Users} = require('../models');
 
 // Function to handle user registration
 const registerUser = (req, res) => {
@@ -24,7 +24,7 @@ const registerUser = (req, res) => {
       }
 
       // Create a new user record in the database
-      User.create({
+      Users.create({
         name,
         email,
         jobDescription,
@@ -55,7 +55,7 @@ const loginUser = (req, res) => {
   }
 
   // Find the user record in the database
-  User.findOne({ where: { email } })
+  Users.findOne({ where: { email } })
     .then((user) => {
       if (!user) {
         return res.status(401).json({ error: 'Invalid email or password' });
@@ -91,7 +91,7 @@ const getUser = (req, res) => {
   const userId = req.params.id || req.user.userId;
 
   // Find the user record in the database
-  User.findByPk(userId)
+  Users.findByPk(userId)
     .then((user) => {
       if (!user) {
         return res.status(404).json({ error: 'User not found' });
@@ -117,7 +117,7 @@ const updateUser = (req, res) => {
   const { name, email, jobDescription, phoneNumber } = req.body;
 
   // Find the user record in the database
-  User.findByPk(userId)
+  Users.findByPk(userId)
     .then((user) => {
       if (!user) {
         return res.status(404).json({ error: 'User not found' });
@@ -154,7 +154,7 @@ const deleteUser = (req, res) => {
   const userId = req.params.id || req.user.userId;
 
   // Find the user record in the database
-  User.findByPk(userId)
+  Users.findByPk(userId)
     .then((user) => {
       if (!user) {
         return res.status(404).json({ error: 'User not found' });
