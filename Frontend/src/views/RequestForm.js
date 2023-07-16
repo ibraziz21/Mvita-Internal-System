@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import './RequestForm.css';
-import axios from 'axios'
+
 
 function RequestForm() {
   const [name, setName] = useState('');
@@ -9,9 +10,13 @@ function RequestForm() {
   const [docket, setDocket] = useState('');
   const [specificRequest, setSpecificRequest] = useState('');
   const [errors, setErrors] = useState({});
+  const [showErrorPopup, setShowErrorPopup] = useState(false); 
+  const [showSuccessPopup, setShowSuccessPopup] = useState(false);
 
   const wardOptions = ['Majengo', 'Tononoka', 'Tudor', 'Ganjoni/Shimanzi', 'Old Town'];
   const docketOptions = ['Education', 'Empowerment', 'Sports Art Culture', 'Health'];
+
+  const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -52,11 +57,20 @@ function RequestForm() {
     };
   
     try {
-      // Make the POST request to the backend API endpoint
-      const response = await axios.post('/api/requests', requestData);
+      // Make the POST request to the backend API endpoint using fetch
+      const response = await fetch('/api/requests', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(requestData),
+      });
+  
+      // Parse the response as JSON
+      const data = await response.json();
   
       // Handle the response from the backend
-      if (response.data.success) {
+      if (data.success) {
         // Request submitted successfully, display success message or perform any necessary actions
         console.log('Request submitted successfully');
         // Clear form fields and errors after successful submission
@@ -66,8 +80,11 @@ function RequestForm() {
         setDocket('');
         setSpecificRequest('');
         setErrors({});
+        // Redirect to the dashboard
+        setShowSuccessPopup(true);
       } else {
         // Request submission failed, display error message or perform any necessary actions
+        setShowErrorPopup(true);
         console.log('Request submission failed');
       }
     } catch (error) {
@@ -120,7 +137,38 @@ function RequestForm() {
         </div>
         <button type="submit">Submit</button>
       </form>
-    </div>
+
+      {/* Error Popup */}
+   {showErrorPopup && (
+     <div className="error-popup">
+     <div className="error-popup-content">
+       <p className="error-popup-message">Entered person is not a voter</p>
+       <button onClick={() => {
+              setShowErrorPopup(false);
+              navigate('/dashboard');
+            }}>Close</button>
+     </div>
+   </div>
+ )}
+
+ {/* Success Popup */}
+ {showSuccessPopup && (
+        <div className="success-popup">
+          <div className="success-popup-content">
+            <p className="success-popup-message">Request submitted successfully!</p>
+            <button onClick={() => {
+              setShowSuccessPopup(false);
+              navigate('/dashboard');
+            }}>
+              Close and Go to Dashboard
+            </button>
+          </div>
+        </div>
+      )}
+</div>
+
+   
+
   );
 }
 
